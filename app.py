@@ -3,7 +3,7 @@
 #
 #  app.py
 #
-#  Copyright 2022 KP <LOCALHOST>
+#  Copyright 2022 KP
 #
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -30,6 +30,24 @@ from model.generate import make_pipe, generate
 def main():
     st.set_page_config(layout="wide", page_title="karlo-ui")
     st.write("# karlo-ui")
+    col_left, col_right = st.columns(2)
+
+    with col_left:
+        prompt = st.text_input("Prompt")
+        n_images = st.slider("Number of images", 0, 8, 1)
+        n_prior = st.slider("Number of prior steps", 0, 100, 25)
+        n_decoder = st.slider("Number of decoder steps", 0, 100, 25)
+        n_super_res = st.slider("Number of super res steps", 0, 100, 7)
+        cfg_prior = st.slider("Prior guidance scale", 1.0, 20.0, 4.0)
+        cfg_decode = st.slider("Decoder guidance scale", 1.0, 20.0, 4.0)
+        if st.button("Generate"):
+            pass
+
+    # with col_right:
+    #     st.image()
+    #     img = image_select("Outputs", ["image1.png", "image2.png", "image3.png"])
+    #
+
     return 0
 
 

@@ -3,7 +3,7 @@
 #
 #  generate.py
 #
-#  Copyright 2022 KP <LOCALHOST>
+#  Copyright 2022 KP
 #
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by

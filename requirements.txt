@@ -3,3 +3,4 @@ diffusers
 accelerate
 safetensors
 streamlit
+streamlit-image-select
