@@ -68,6 +68,7 @@ def make_pipe_up(scheduler):
 def generate(prompt, n_images, n_prior, n_decoder, n_super_res, cfg_prior, cfg_decoder):
     pipe = make_pipe()
     torch.cuda.empty_cache()
+
     with torch.autocast("cuda"):
         images = pipe(
             prompt=prompt,
@@ -82,7 +83,6 @@ def generate(prompt, n_images, n_prior, n_decoder, n_super_res, cfg_prior, cfg_d
 
 
 def upscale(xfm_on, downscale, scheduler, prompt, neg_prompt, images, n_steps, cfg):
-
     batch_prompt = [prompt] * len(images)
     batch_neg_prompt = [neg_prompt] * len(images)
     for i in range(len(images)):
@@ -93,6 +93,7 @@ def upscale(xfm_on, downscale, scheduler, prompt, neg_prompt, images, n_steps, c
     if xfm_on:
         pipe.set_use_memory_efficient_attention_xformers(True)
     torch.cuda.empty_cache()
+
     images = pipe(
         image=images,
         prompt=batch_prompt,

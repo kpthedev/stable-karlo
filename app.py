@@ -35,8 +35,8 @@ def main():
         "The first time you run this app, it will take some time to download all the models.",
         icon="ℹ️",
     )
-    col_left, col_right = st.columns(2)
 
+    col_left, col_right = st.columns(2)
     with col_left:
         prompt = st.text_area("Prompt", key="karlo-prompt")
         n_images = st.slider("Number of images", 0, 8, 1)
@@ -77,6 +77,7 @@ def main():
                 cfg_prior=cfg_prior,
                 cfg_decoder=cfg_decoder,
             )
+
             with col_right:
                 if up:
                     if show_original:
@@ -94,6 +95,7 @@ def main():
                     st.image(images_up)
                 else:
                     st.image(images)
+
     st.write(
         "**Notes:**",
         "\n * If you're running out of VRAM, the Upscaler Settings has downscaling and xformers options.",
