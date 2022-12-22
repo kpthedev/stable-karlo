@@ -2,6 +2,6 @@ torch
 diffusers
 accelerate
 transformers
+scipy
 safetensors
 streamlit
-streamlit-image-select
