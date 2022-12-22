@@ -24,7 +24,8 @@
 
 import torch
 import streamlit as st
-from diffusers import UnCLIPPipeline
+from diffusers import UnCLIPPipeline, StableDiffusionUpscalePipeline
+
 
 @st.cache(allow_output_mutation=True)
 def make_pipe():
@@ -34,15 +35,33 @@ def make_pipe():
     return pipe.to("cuda")
 
 
+@st.cache(allow_output_mutation=True)
+def make_pipe_up():
+    pipe = StableDiffusionUpscalePipeline.from_pretrained(
+        "stabilityai/stable-diffusion-x4-upscaler", torch_dtype=torch.float16
+    )
+    return pipe.to("cuda")
+
+
 def generate(prompt, n_images, n_prior, n_decoder, n_super_res, cfg_prior, cfg_decoder):
     pipe = make_pipe()
-    images = pipe(
-        prompt=prompt,
-        num_images_per_prompt=n_images,
-        prior_num_inference_steps=n_prior,
-        decoder_num_inference_steps=n_decoder,
-        super_res_num_inference_steps=n_super_res,
-        prior_guidance_scale=cfg_prior,
-        decoder_guidance_scale=cfg_decoder,
-    ).images
+    torch.cuda.empty_cache()
+    with torch.autocast("cuda"):
+        images = pipe(
+            prompt=prompt,
+            num_images_per_prompt=n_images,
+            prior_num_inference_steps=n_prior,
+            decoder_num_inference_steps=n_decoder,
+            super_res_num_inference_steps=n_super_res,
+            prior_guidance_scale=cfg_prior,
+            decoder_guidance_scale=cfg_decoder,
+        ).images
+    return images
+
+
+def upscale(prompt, images):
+    pipe = make_pipe_up()
+    torch.cuda.empty_cache()
+    with torch.autocast("cuda"):
+        images = pipe(prompt=prompt, image=images, num_inference_steps=20).images
     return images

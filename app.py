@@ -25,7 +25,7 @@
 import sys
 import streamlit as st
 from streamlit_image_select import image_select
-from model.generate import generate
+from model.generate import generate, upscale
 
 
 def main():
@@ -41,6 +41,7 @@ def main():
         n_super_res = st.slider("Number of super res steps", 0, 100, 7)
         cfg_prior = st.slider("Prior guidance scale", 1.0, 20.0, 4.0)
         cfg_decoder = st.slider("Decoder guidance scale", 1.0, 20.0, 4.0)
+        up = st.checkbox("Use SD v2.1 to upscale")
         if st.button("Generate"):
             images = generate(
                 prompt,
@@ -51,6 +52,9 @@ def main():
                 cfg_prior,
                 cfg_decoder,
             )
+            if up:
+                images = upscale(prompt, images)
+
             with col_right:
                 st.image(images)
 
