@@ -31,12 +31,16 @@ from model.generate import generate, upscale
 def main():
     st.set_page_config(layout="wide", page_title="karlo-ui")
     st.write("# karlo-ui")
+    st.info(
+        "The first time you run this app, it will take some time to download all the models.",
+        icon="ℹ️",
+    )
     col_left, col_right = st.columns(2)
 
     with col_left:
         prompt = st.text_area("Prompt", key="karlo-prompt")
-        up = st.checkbox("Use SD-v2 to upscale")
         n_images = st.slider("Number of images", 0, 8, 1)
+        up = st.checkbox("Use SD-v2 to upscale", value=True)
 
         with st.expander("Karlo Settings"):
             n_prior = st.slider("Number of prior steps", 0, 100, 25)
@@ -60,7 +64,8 @@ def main():
             up_scheduler = st.radio(
                 "Scheduler", ("DDIM", "LMS", "Euler"), horizontal=True
             )
-            show_original = st.checkbox("Show original images")
+            show_original = st.checkbox("Show original images", value=False)
+            xfm = st.checkbox("Use xformers", value=False)
 
         if st.button("Generate"):
             images = generate(
@@ -77,6 +82,7 @@ def main():
                     if show_original:
                         st.image(images)
                     images_up = upscale(
+                        xfm_on=xfm,
                         downscale=up_downscale,
                         scheduler=up_scheduler,
                         prompt=up_prompt,
@@ -88,6 +94,11 @@ def main():
                     st.image(images_up)
                 else:
                     st.image(images)
+    st.write(
+        "**Notes:**",
+        "\n * If you're running out of VRAM, the Upscaler Settings has downscaling and xformers options.",
+        "\n * If the *Use SD-v2 to upscale* is not checked, the output is just from Karlo.",
+    )
 
 
 if __name__ == "__main__":

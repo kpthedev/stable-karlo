@@ -81,7 +81,7 @@ def generate(prompt, n_images, n_prior, n_decoder, n_super_res, cfg_prior, cfg_d
     return images
 
 
-def upscale(downscale, scheduler, prompt, neg_prompt, images, n_steps, cfg):
+def upscale(xfm_on, downscale, scheduler, prompt, neg_prompt, images, n_steps, cfg):
 
     batch_prompt = [prompt] * len(images)
     batch_neg_prompt = [neg_prompt] * len(images)
@@ -90,6 +90,8 @@ def upscale(downscale, scheduler, prompt, neg_prompt, images, n_steps, cfg):
 
     pipe = make_pipe_up(scheduler)
     pipe.enable_attention_slicing()
+    if xfm_on:
+        pipe.set_use_memory_efficient_attention_xformers(True)
     torch.cuda.empty_cache()
     images = pipe(
         image=images,
