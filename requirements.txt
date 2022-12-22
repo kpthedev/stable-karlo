@@ -1,6 +1,7 @@
 torch
 diffusers
 accelerate
+transformers
 safetensors
 streamlit
 streamlit-image-select

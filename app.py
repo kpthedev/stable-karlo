@@ -24,7 +24,8 @@
 
 import sys
 import streamlit as st
-from model.generate import make_pipe, generate
+from streamlit_image_select import image_select
+from model.generate import generate
 
 
 def main():
@@ -39,17 +40,20 @@ def main():
         n_decoder = st.slider("Number of decoder steps", 0, 100, 25)
         n_super_res = st.slider("Number of super res steps", 0, 100, 7)
         cfg_prior = st.slider("Prior guidance scale", 1.0, 20.0, 4.0)
-        cfg_decode = st.slider("Decoder guidance scale", 1.0, 20.0, 4.0)
+        cfg_decoder = st.slider("Decoder guidance scale", 1.0, 20.0, 4.0)
         if st.button("Generate"):
-            pass
-
-    # with col_right:
-    #     st.image()
-    #     img = image_select("Outputs", ["image1.png", "image2.png", "image3.png"])
-    #
-
-    return 0
+            images = generate(
+                prompt,
+                n_images,
+                n_prior,
+                n_decoder,
+                n_super_res,
+                cfg_prior,
+                cfg_decoder,
+            )
+            with col_right:
+                st.image(images)
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    main()

@@ -23,9 +23,10 @@
 #
 
 import torch
+import streamlit as st
 from diffusers import UnCLIPPipeline
 
-
+@st.cache(allow_output_mutation=True)
 def make_pipe():
     pipe = UnCLIPPipeline.from_pretrained(
         "kakaobrain/karlo-v1-alpha", torch_dtype=torch.float16
@@ -43,5 +44,5 @@ def generate(prompt, n_images, n_prior, n_decoder, n_super_res, cfg_prior, cfg_d
         super_res_num_inference_steps=n_super_res,
         prior_guidance_scale=cfg_prior,
         decoder_guidance_scale=cfg_decoder,
-    )
+    ).images
     return images
