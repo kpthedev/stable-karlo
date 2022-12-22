@@ -22,9 +22,7 @@
 #
 #
 
-import sys
 import streamlit as st
-from streamlit_image_select import image_select
 from model.generate import generate, upscale
 
 
