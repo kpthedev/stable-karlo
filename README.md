@@ -18,7 +18,7 @@ source .env/bin/activate
 pip install -r requirements.txt
 ```
 
-Note that [xformers](https://github.com/facebookresearch/xformers) is not in the `requirements.txt`; however, it's highly recommended that you follow the instructions on their repo to get it set up in the python environment.
+> Note that [xformers](https://github.com/facebookresearch/xformers) is not in the `requirements.txt`. Using it is optional, but I'd recommend it if you have a GPU with low memory. You can follow the instructions on their repo to get it set up in the python environment.
 
 ## Running
 To run the app, make sure you are in the `stable-karlo` folder and have activated the environment, then run:
@@ -28,12 +28,12 @@ streamlit run app.py
 ```
 This should open the webUI in your browser automatically.
 
-> The very first time you run the app, it will download the models from Huggingface. This may take a while, depending on your internet speed—the models are around 18G total.
+> The very first time you run the app, it will download the models from Huggingface. This may take a while, depending on your internet speed—the models are around 18GB total.
 
-### VRAM Requirements
-The Karlo model requires a moderate amount of VRAM; however, the Stable Diffusion Upscaler requires a significant amount of GPU memory. In the Upscaler settings, there are two methods of lowering VRAM requirements:
+### Memory Requirements
+The Karlo model by itself requires a small amount of GPU memory (~8GB). However, the Stable Diffusion Upscaler requires significantly more VRAM. In the Upscaler settings, there are two methods of lowering the VRAM requirements:
 
-* The first, is to downscale the Karlo image (256x256 pixels) that is fed into the upscaler.
+* The first, is to downscale the Karlo image (originally 256x256 pixels) that is fed into the upscaler.
 * The other is using xformers (which requires a working xformers installation).
 
 ## License
