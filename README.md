@@ -1,6 +1,8 @@
 # stable-karlo
 
-A Streamlit app that combines [Karlo](https://github.com/kakaobrain/karlo) text-to-image generations with the [Stable-Diffusion v2](https://github.com/Stability-AI/stablediffusion) upscaler.
+![screenshot](https://user-images.githubusercontent.com/115115916/209260866-fb3a6cf2-060e-46b7-b89f-778db1d14e4d.jpg)
+
+A Streamlit app that combines [Karlo](https://github.com/kakaobrain/karlo) text-to-image generations with the [Stable-Diffusion v2](https://github.com/Stability-AI/stablediffusion) upscaler in a simple webUI.
 
 **Implemented with:**
 * Huggingface's [Diffusers](https://github.com/huggingface/diffusers)🧨
@@ -19,11 +21,12 @@ pip install -r requirements.txt
 Note that [xformers](https://github.com/facebookresearch/xformers) is not in the `requirements.txt`; however, it's highly recommended that you follow the instructions on their repo to get it set up in the python environment.
 
 ## Running
-To run the app, make sure you are in the `stable-karlo` folder and have actived the environment, then run:
+To run the app, make sure you are in the `stable-karlo` folder and have activated the environment, then run:
 
 ```bash
 streamlit run app.py
 ```
+This should open the webUI in your browser automatically.
 
 > The very first time you run the app, it will download the models from Huggingface. This may take a while, depending on your internet speed—the models are around 18G total.
 
