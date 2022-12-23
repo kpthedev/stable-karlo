@@ -28,7 +28,7 @@ from model.generate import generate, upscale
 
 def main():
     st.set_page_config(layout="wide", page_title="karlo-ui")
-    st.write("# karlo-ui")
+    st.write("# stable-karlo")
     st.info(
         "The first time you run this app, it will take some time to download all the models.",
         icon="ℹ️",

@@ -31,7 +31,6 @@ from diffusers import (
     LMSDiscreteScheduler,
     EulerDiscreteScheduler,
 )
-from PIL import Image
 
 
 @st.cache(allow_output_mutation=True)
