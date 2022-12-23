@@ -30,7 +30,7 @@ This should open the webUI in your browser automatically.
 
 > The very first time you run the app, it will download the models from Huggingface. This may take a while, depending on your internet speed—the models are around 18G total.
 
-### VRAM Issues
+### VRAM Requirements
 The Karlo model requires a moderate amount of VRAM; however, the Stable Diffusion Upscaler requires a significant amount of GPU memory. In the Upscaler settings, there are two methods of lowering VRAM requirements:
 
 * The first, is to downscale the Karlo image (256x256 pixels) that is fed into the upscaler.
