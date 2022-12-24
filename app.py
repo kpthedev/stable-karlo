@@ -36,7 +36,7 @@ def main():
 
     col_left, col_right = st.columns(2)
     with col_left:
-        prompt = st.text_area("Prompt (77 tokens max)", key="karlo-prompt")
+        prompt = st.text_area("Prompt (77 words max)", key="karlo-prompt")
         n_images = st.slider("Number of images", 0, 8, 1)
         up = st.checkbox("Use SD-v2 to upscale", value=True)
 

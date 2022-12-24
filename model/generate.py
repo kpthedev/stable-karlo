@@ -33,7 +33,7 @@ from diffusers import (
 )
 
 
-@st.cache(allow_output_mutation=True)
+@st.cache(allow_output_mutation=True, max_entries=1)
 def make_pipe():
     pipe = UnCLIPPipeline.from_pretrained(
         "kakaobrain/karlo-v1-alpha", torch_dtype=torch.float16
@@ -41,7 +41,7 @@ def make_pipe():
     return pipe.to("cuda")
 
 
-@st.cache(allow_output_mutation=True)
+@st.cache(allow_output_mutation=True, max_entries=1)
 def make_pipe_up(scheduler):
     if scheduler == "Euler":
         scheduler = EulerDiscreteScheduler.from_pretrained(
@@ -86,6 +86,7 @@ def generate(
             prior_guidance_scale=cfg_prior,
             decoder_guidance_scale=cfg_decoder,
         ).images
+    torch.cuda.empty_cache()
     return images
 
 
@@ -110,4 +111,5 @@ def upscale(cpu, xfm, downscale, scheduler, prompt, neg_prompt, images, n_steps,
         num_inference_steps=n_steps,
         guidance_scale=cfg,
     ).images
+    torch.cuda.empty_cache()
     return images
