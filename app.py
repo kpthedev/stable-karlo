@@ -47,6 +47,18 @@ def main():
             cfg_prior = st.slider("Prior guidance scale", 0.0, 20.0, 4.0)
             cfg_decoder = st.slider("Decoder guidance scale", 0.0, 20.0, 4.0)
 
+            st.write("**Memory Optimizations:**")
+            cpu_karlo = st.checkbox(
+                "Use CPU offloading (significanlty reduces VRAM usage, but is much slower)",
+                value=False,
+                key="karlo-cpu",
+            )
+            xfm_karlo = st.checkbox(
+                "Use xformers (requires xformers installed)",
+                value=False,
+                key="karlo-xfm",
+            )
+
         with st.expander("Stable-Diffusion Upscaler Settings"):
             up_prompt = st.text_area("Prompt", prompt, key="sd-prompt")
             up_neg_prompt = st.text_area("Negative prompt")
@@ -63,10 +75,21 @@ def main():
                 "Scheduler", ("DDIM", "LMS", "Euler"), horizontal=True
             )
             show_original = st.checkbox("Show original images", value=False)
-            xfm = st.checkbox("Use xformers", value=False)
+
+            st.write("**Memory Optimizations:**")
+            cpu_sd = st.checkbox(
+                "Use CPU offloading (significanlty reduces VRAM usage, but is much slower)",
+                value=False,
+                key="sd-cpu",
+            )
+            xfm_sd = st.checkbox(
+                "Use xformers (requires xforms installed)", value=False, key="sd-xfm"
+            )
 
         if st.button("Generate"):
             images = generate(
+                cpu=cpu_karlo,
+                xfm=xfm_karlo,
                 prompt=prompt,
                 n_images=n_images,
                 n_prior=n_prior,
@@ -81,7 +104,8 @@ def main():
                     if show_original:
                         st.image(images)
                     images_up = upscale(
-                        xfm_on=xfm,
+                        cpu=cpu_sd,
+                        xfm=xfm_sd,
                         downscale=up_downscale,
                         scheduler=up_scheduler,
                         prompt=up_prompt,
@@ -96,8 +120,8 @@ def main():
 
     st.write(
         "**Notes:**",
-        "\n * If you're running out of VRAM, the Upscaler Settings has downscaling and xformers options.",
-        "\n * If the *Use SD-v2 to upscale* is not checked, the output is just from Karlo.",
+        "\n * If you're getting `OutOfMemory` errors, try using the VRAM optimizations in each of the model's settings.",
+        "\n * If the **Use SD-v2 to upscale** is not checked, the output is just from Karlo.",
     )
 
 
