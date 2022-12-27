@@ -67,15 +67,14 @@ def make_pipe_up(scheduler):
 def generate(
     cpu, xfm, prompt, n_images, n_prior, n_decoder, n_super_res, cfg_prior, cfg_decoder
 ):
-    torch.cuda.empty_cache()
     pipe = make_pipe()
     pipe.enable_attention_slicing()
     if cpu:
         pipe.enable_sequential_cpu_offload()
     if xfm:
         pipe.set_use_memory_efficient_attention_xformers(True)
-    torch.cuda.empty_cache()
 
+    torch.cuda.empty_cache()
     with torch.autocast("cuda"):
         images = pipe(
             prompt=prompt,
@@ -86,7 +85,6 @@ def generate(
             prior_guidance_scale=cfg_prior,
             decoder_guidance_scale=cfg_decoder,
         ).images
-    torch.cuda.empty_cache()
     return images
 
 
@@ -96,7 +94,6 @@ def upscale(cpu, xfm, downscale, scheduler, prompt, neg_prompt, images, n_steps,
     for i in range(len(images)):
         images[i] = images[i].resize((downscale, downscale))
 
-    torch.cuda.empty_cache()
     pipe = make_pipe_up(scheduler)
     pipe.enable_attention_slicing()
     if cpu:
@@ -104,6 +101,7 @@ def upscale(cpu, xfm, downscale, scheduler, prompt, neg_prompt, images, n_steps,
     if xfm:
         pipe.set_use_memory_efficient_attention_xformers(True)
 
+    torch.cuda.empty_cache()
     images = pipe(
         image=images,
         prompt=batch_prompt,
@@ -111,5 +109,4 @@ def upscale(cpu, xfm, downscale, scheduler, prompt, neg_prompt, images, n_steps,
         num_inference_steps=n_steps,
         guidance_scale=cfg,
     ).images
-    torch.cuda.empty_cache()
     return images

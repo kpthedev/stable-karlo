@@ -83,7 +83,7 @@ def main():
                 key="sd-cpu",
             )
             xfm_sd = st.checkbox(
-                "Use xformers (requires xforms installed)", value=False, key="sd-xfm"
+                "Use xformers (requires xformers installed)", value=False, key="sd-xfm"
             )
 
         if st.button("Generate"):
