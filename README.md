@@ -1,6 +1,6 @@
 # stable-karlo
 
-![screenshot](https://user-images.githubusercontent.com/115115916/209260866-fb3a6cf2-060e-46b7-b89f-778db1d14e4d.jpg)
+![screenshot](https://user-images.githubusercontent.com/115115916/210150684-846dbc11-bd22-4cdf-90f9-23927158e1db.png)
 
 A Streamlit app that combines [Karlo](https://github.com/kakaobrain/karlo) text-to-image generations with the [Stable-Diffusion v2](https://github.com/Stability-AI/stablediffusion) upscaler in a simple webUI.
 
