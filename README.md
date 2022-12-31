@@ -10,6 +10,9 @@ A Streamlit app that combines [Karlo](https://github.com/kakaobrain/karlo) text-
 * [xformers](https://github.com/facebookresearch/xformers) (optionally)
 
 ## Install
+> Note that [xformers](https://github.com/facebookresearch/xformers) is not in the `requirements.txt`. Using it is optional, but I'd recommend it if you have a GPU with low memory. You can follow the instructions on their repo to get it set up in the python environment.
+
+### Linux/MacOS
 ```bash
 git clone https://github.com/kpthedev/stable-karlo.git
 cd stable-karlo
@@ -18,7 +21,15 @@ source .env/bin/activate
 pip install -r requirements.txt
 ```
 
-> Note that [xformers](https://github.com/facebookresearch/xformers) is not in the `requirements.txt`. Using it is optional, but I'd recommend it if you have a GPU with low memory. You can follow the instructions on their repo to get it set up in the python environment.
+### Windows
+```bash
+git clone https://github.com/kpthedev/stable-karlo.git
+cd stable-karlo
+python -m venv .env
+.env\Scripts\activate
+pip install -r requirements.txt
+pip install --upgrade --force-reinstall torch --extra-index-url https://download.pytorch.org/whl/cu117
+```
 
 ## Running
 To run the app, make sure you are in the `stable-karlo` folder and have activated the environment, then run:
