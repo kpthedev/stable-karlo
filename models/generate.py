@@ -33,16 +33,23 @@ from diffusers import (
 )
 
 
-@st.cache(allow_output_mutation=True, max_entries=1)
-def make_pipe():
+def make_pipeline_generator():
+    """Create Karlo pipeline"""
     pipe = UnCLIPPipeline.from_pretrained(
         "kakaobrain/karlo-v1-alpha", torch_dtype=torch.float16
     )
-    return pipe.to("cuda")
+    pipe = pipe.to("cuda")
+    return pipe
 
 
-@st.cache(allow_output_mutation=True, max_entries=1)
-def make_pipe_up(scheduler):
+@st.cache(allow_output_mutation=True, show_spinner=False, max_entries=1)
+def cached_generator():
+    """Cache generator pipeline in Streamlit to avoid fetching; not compatibale with cpu offloading."""
+    return make_pipeline_generator()
+
+
+def make_pipeline_upscaler(scheduler):
+    """Create Stable-Diffusion upscaler pipeline with scpecified scheduler"""
     if scheduler == "Euler":
         scheduler = EulerDiscreteScheduler.from_pretrained(
             "stabilityai/stable-diffusion-x4-upscaler", subfolder="scheduler"
@@ -61,18 +68,26 @@ def make_pipe_up(scheduler):
         scheduler=scheduler,
         torch_dtype=torch.float16,
     )
-    return pipe.to("cuda")
+    pipe = pipe.to("cuda")
+    return pipe
+
+
+@st.cache(allow_output_mutation=True, show_spinner=False, max_entries=1)
+def cached_upscaler():
+    """Cache upscaler pipeline in Streamlit to avoid fetching; not compatibale with cpu offloading."""
+    return make_pipeline_upscaler
 
 
 def generate(
-    cpu, xfm, prompt, n_images, n_prior, n_decoder, n_super_res, cfg_prior, cfg_decoder
+    cpu, prompt, n_images, n_prior, n_decoder, n_super_res, cfg_prior, cfg_decoder
 ):
-    pipe = make_pipe()
-    pipe.enable_attention_slicing()
+    """Generate image using the Karlo model"""
     if cpu:
+        pipe = make_pipeline_generator()
         pipe.enable_sequential_cpu_offload()
-    if xfm:
-        pipe.set_use_memory_efficient_attention_xformers(True)
+    else:
+        pipe = cached_generator()
+    pipe.enable_attention_slicing()
 
     torch.cuda.empty_cache()
     with torch.autocast("cuda"):
@@ -89,17 +104,20 @@ def generate(
 
 
 def upscale(cpu, xfm, downscale, scheduler, prompt, neg_prompt, images, n_steps, cfg):
+    """Upscale image using the Stable-Diffusion upscaling model"""
     batch_prompt = [prompt] * len(images)
     batch_neg_prompt = [neg_prompt] * len(images)
     for i in range(len(images)):
         images[i] = images[i].resize((downscale, downscale))
 
-    pipe = make_pipe_up(scheduler)
-    pipe.enable_attention_slicing()
     if cpu:
+        pipe = make_pipeline_upscaler(scheduler)
         pipe.enable_sequential_cpu_offload()
+    else:
+        pipe = cached_upscaler()
     if xfm:
         pipe.set_use_memory_efficient_attention_xformers(True)
+    pipe.enable_attention_slicing()
 
     torch.cuda.empty_cache()
     images = pipe(
