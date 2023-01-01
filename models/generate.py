@@ -73,9 +73,9 @@ def make_pipeline_upscaler(scheduler):
 
 
 @st.cache(allow_output_mutation=True, show_spinner=False, max_entries=1)
-def cached_upscaler():
+def cached_upscaler(scheduler):
     """Cache upscaler pipeline in Streamlit to avoid fetching; not compatibale with cpu offloading."""
-    return make_pipeline_upscaler()
+    return make_pipeline_upscaler(scheduler)
 
 
 def generate(
@@ -114,7 +114,7 @@ def upscale(cpu, xfm, downscale, scheduler, prompt, neg_prompt, images, n_steps,
         pipe = make_pipeline_upscaler(scheduler)
         pipe.enable_sequential_cpu_offload()
     else:
-        pipe = cached_upscaler()
+        pipe = cached_upscaler(scheduler)
     if xfm:
         pipe.set_use_memory_efficient_attention_xformers(True)
     pipe.enable_attention_slicing()
