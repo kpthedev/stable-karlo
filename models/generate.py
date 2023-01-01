@@ -79,11 +79,7 @@ def generate(
     cpu, prompt, n_images, n_prior, n_decoder, n_super_res, cfg_prior, cfg_decoder
 ):
     """Generate image using the Karlo model"""
-    if cpu:
-        pipe = make_pipeline_generator(cpu=True)
-    else:
-        pipe = make_pipeline_generator(cpu=False)
-
+    pipe = make_pipeline_generator(cpu=cpu)
     torch.cuda.empty_cache()
     with torch.autocast("cuda"):
         images = pipe(
@@ -105,11 +101,7 @@ def upscale(cpu, xfm, downscale, scheduler, prompt, neg_prompt, images, n_steps,
     for i in range(len(images)):
         images[i] = images[i].resize((downscale, downscale))
 
-    if cpu:
-        pipe = make_pipeline_upscaler(scheduler, cpu=True, xfm=xfm)
-    else:
-        pipe = make_pipeline_upscaler(scheduler, cpu=False, xfm=xfm)
-
+    pipe = make_pipeline_upscaler(scheduler, cpu=cpu, xfm=xfm)
     torch.cuda.empty_cache()
     images = pipe(
         image=images,
