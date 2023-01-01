@@ -75,7 +75,7 @@ def make_pipeline_upscaler(scheduler):
 @st.cache(allow_output_mutation=True, show_spinner=False, max_entries=1)
 def cached_upscaler():
     """Cache upscaler pipeline in Streamlit to avoid fetching; not compatibale with cpu offloading."""
-    return make_pipeline_upscaler
+    return make_pipeline_upscaler()
 
 
 def generate(
