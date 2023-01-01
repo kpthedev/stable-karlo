@@ -46,6 +46,7 @@ def make_pipeline_generator(cpu=False):
     return pipe
 
 
+@st.cache(allow_output_mutation=True, show_spinner=False, max_entries=1)
 def make_pipeline_upscaler(scheduler, cpu=False, xfm=False):
     """Create Stable-Diffusion upscaler pipeline with scpecified scheduler"""
     if scheduler == "Euler":
@@ -69,7 +70,7 @@ def make_pipeline_upscaler(scheduler, cpu=False, xfm=False):
     pipe = pipe.to("cuda")
     if cpu:
         pipe.enable_sequential_cpu_offload()
-    if xmf:
+    if xfm:
         pipe.set_use_memory_efficient_attention_xformers(True)
     pipe.enable_attention_slicing()
     return pipe
