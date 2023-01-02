@@ -1,13 +1,13 @@
 # stable-karlo
 
-![screenshot](https://user-images.githubusercontent.com/115115916/210150684-846dbc11-bd22-4cdf-90f9-23927158e1db.png)
+![screenshot](https://user-images.githubusercontent.com/115115916/210285673-833ee286-c1a0-4d9d-a1e7-92991b9eb2f6.png)
 
 A Streamlit app that combines [Karlo](https://github.com/kakaobrain/karlo) text-to-image generations with the [Stable-Diffusion v2](https://github.com/Stability-AI/stablediffusion) upscaler in a simple webUI.
 
 **Implemented with:**
-* Huggingface's [Diffusers](https://github.com/huggingface/diffusers)🧨
+* [Huggingface Diffusers](https://github.com/huggingface/diffusers)🧨
 * [Streamlit](https://github.com/streamlit/streamlit)
-* [xformers](https://github.com/facebookresearch/xformers) (optionally)
+* [xformers](https://github.com/facebookresearch/xformers)
 
 ## Install
 > Note that [xformers](https://github.com/facebookresearch/xformers) is not in the `requirements.txt`. Using it is optional, but I'd recommend it if you have a GPU with low memory. You can follow the instructions on their repo to get it set up in the python environment.
@@ -42,10 +42,30 @@ This should open the webUI in your browser automatically.
 > The very first time you run the app, it will download the models from Huggingface. This may take a while, depending on your internet speed—the models are around 18GB total.
 
 ### Memory Requirements
-The Karlo model by itself requires a small amount of GPU memory (~8GB). However, the Stable Diffusion Upscaler requires significantly more VRAM. In the Upscaler settings, there are two methods of lowering the VRAM requirements:
+In the settings of each model, there are options for lowering the VRAM requirements:
 
-* The first, is to downscale the Karlo image (originally 256x256 pixels) that is fed into the upscaler.
-* The other is using xformers (which requires a working xformers installation).
+* Both model settings have a **Use CPU offloading** option, which will substantially lower the VRAM usage.
+* The Upscaler has two other methods to lower the VRAM usage:
+  * **Downscale input image** - takes the Karlo image that is fed into the upscaler and downscales it to the specified size
+  * **Use xformers** - uses xformers' efficent memory attention to lower the VRAM usage (this option requires a working xformers installation)
+  
+  ---
+    
+  | Model | Optimizations | VRAM Usage |
+  |--------|---------------|------------|
+  | Karlo | none | 10GB |
+  | Karlo | CPU-offloading | 7GB |
+  
+  | Model | Optimizations | VRAM Usage |
+  |--------|---------------|------------|
+  | Karlo + Upscale | none | >24GB |
+  | Karlo + Upscale | Downscale to < 190px | 12GB |
+  | Karlo + Upscale | xformers | 15GB |
+  | Karlo + Upscale | CPU-offloading + xformers | 15GB |
+  | Karlo + Upscale | CPU-offloading + Downscale to < 190px | 12GB |
+  | Karlo + Upscale | CPU-offloading + xformers + Downscale to < 190px | 10GB |
+
+
 
 ## License
 All the original code that I have written is licensed under a GPL license. The licenses for the respective model weights, are included in the repository.
