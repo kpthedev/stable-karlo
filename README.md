@@ -4,12 +4,20 @@
 
 A Streamlit app that combines [Karlo](https://github.com/kakaobrain/karlo) text-to-image generations with the [Stable-Diffusion v2](https://github.com/Stability-AI/stablediffusion) upscaler in a simple webUI.
 
-**Implemented with:**
+<br/>
+
+> ### Now available on Google Colab:
+> [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/kpthedev/stable-karlo-colab/blob/main/stable_karlo_colab.ipynb)
+
+<br/>
+
+**Built with:**
 * [Huggingface Diffusers](https://github.com/huggingface/diffusers)🧨
 * [Streamlit](https://github.com/streamlit/streamlit)
 * [xformers](https://github.com/facebookresearch/xformers)
 
-## Install
+## Install (Local)
+
 > Note that [xformers](https://github.com/facebookresearch/xformers) is not in the `requirements.txt`. Using it is optional, but I'd recommend it if you have a GPU with low memory. You can follow the instructions on their repo to get it set up in the python environment.
 
 ### Linux/MacOS
@@ -65,7 +73,10 @@ In the settings of each model, there are options for lowering the VRAM requireme
   | Karlo + Upscale | CPU-offloading + Downscale to < 190px | 12GB |
   | Karlo + Upscale | CPU-offloading + xformers + Downscale to < 190px | 10GB |
 
-
-
 ## License
 All the original code that I have written is licensed under a GPL license. The licenses for the respective model weights, are included in the repository.
+
+## Changelog
+* Dec 22, 2022 - Inital release
+* Jan 02, 2023 - Add CPU offloading
+* Jan 18, 2023 - Add Google Colab support
