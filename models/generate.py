@@ -3,7 +3,7 @@
 #
 #  generate.py
 #
-#  Copyright 2022 KP
+#  Copyright 2023 KP
 #
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -82,16 +82,15 @@ def generate(
     """Generate image using the Karlo model"""
     pipe = make_pipeline_generator(cpu=cpu)
     torch.cuda.empty_cache()
-    with torch.autocast("cuda"):
-        images = pipe(
-            prompt=prompt,
-            num_images_per_prompt=n_images,
-            prior_num_inference_steps=n_prior,
-            decoder_num_inference_steps=n_decoder,
-            super_res_num_inference_steps=n_super_res,
-            prior_guidance_scale=cfg_prior,
-            decoder_guidance_scale=cfg_decoder,
-        ).images
+    images = pipe(
+        prompt=prompt,
+        num_images_per_prompt=n_images,
+        prior_num_inference_steps=n_prior,
+        decoder_num_inference_steps=n_decoder,
+        super_res_num_inference_steps=n_super_res,
+        prior_guidance_scale=cfg_prior,
+        decoder_guidance_scale=cfg_decoder,
+    ).images
     return images
 
 
