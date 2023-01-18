@@ -13,6 +13,7 @@ A Streamlit app that combines [Karlo](https://github.com/kakaobrain/karlo) text-
 
 **Built with:**
 * [Huggingface Diffusers](https://github.com/huggingface/diffusers)🧨
+* [Pytorch](https://github.com/pytorch/pytorch)
 * [Streamlit](https://github.com/streamlit/streamlit)
 * [xformers](https://github.com/facebookresearch/xformers)
 
