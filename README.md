@@ -81,3 +81,4 @@ All the original code that I have written is licensed under a GPL license. The l
 * Dec 22, 2022 - Inital release
 * Jan 02, 2023 - Add CPU offloading
 * Jan 18, 2023 - Add Google Colab support
+* Apr 06, 2023 - Update to use new Streamlit cache
