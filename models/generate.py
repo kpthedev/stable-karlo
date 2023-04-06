@@ -33,7 +33,7 @@ from diffusers import (
 )
 
 
-@st.cache(allow_output_mutation=True, show_spinner=False, max_entries=1)
+@st.cache_resource(show_spinner=False, max_entries=1)
 def make_pipeline_generator(cpu=False):
     """Create Karlo pipeline"""
     pipe = UnCLIPPipeline.from_pretrained(
@@ -46,7 +46,7 @@ def make_pipeline_generator(cpu=False):
     return pipe
 
 
-@st.cache(allow_output_mutation=True, show_spinner=False, max_entries=1)
+@st.cache_resource(show_spinner=False, max_entries=1)
 def make_pipeline_upscaler(scheduler, cpu=False, xfm=False):
     """Create Stable-Diffusion upscaler pipeline with scpecified scheduler"""
     if scheduler == "Euler":
